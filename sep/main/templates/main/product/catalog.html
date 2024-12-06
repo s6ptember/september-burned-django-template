@@ -1,0 +1,59 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Shop{% endblock title %}
+
+{% block content %}
+    <div class="catalog d-flex">
+        <form method="get" action="{% url 'main:catalog' %}" class="sidebar" id="filter-form">
+
+            <h4 class="price-head">Ценовой диапазон:</h4>
+            <div class="price-range">
+                <input type="number" name="min_price" id="min_price" placeholder="Min Price" value="{{ request.GET.min_price }}" oninput="debounceApplyFilters()">
+                <input type="number" name="max_price" id="max_price" placeholder="Max Price" value="{{ request.GET.max_price }}" oninput="debounceApplyFilters()">
+            </div>
+            
+            <h4 class="category-head">Категории:</h4>
+            {% for category in categories %}
+                <div class="category-option d-flex gap-2">
+                    <input type="checkbox" name="category" id="category-{{ category.slug }}" value="{{ category.slug }}"
+                        {% if category.slug in selected_categories %} checked{% endif %} onchange="applyFilters()">
+                    <label for="category-{{ category.slug }}" class="d-flex">
+                        <div class="category-name">{{ category.name }}</div> <div class="category-len">{{ category.get_item_count }}</div>
+                    </label>
+                </div>
+            {% endfor %}
+            
+            {% comment %} ФИЛЬТРАЦИЯ ПО РАЗМЕРУ(если размерная сетка используется) {% endcomment %}
+            <h4 class="size-head">Размер:</h4>
+            {% for size in sizes %}
+                <div class="category-option">
+                    <input type="checkbox" name="size" id="size-{{ size.name }}" value="{{ size.name }}"
+                        {% if size.name in selected_sizes %} checked{% endif %} onchange="applyFilters()">
+                    <label for="size-{{ size.name }}">{{ size.name }}</label>
+                </div>
+            {% endfor %}
+        </form>
+    
+        <div class="product-list">
+            <div class="card-container d-flex flex-wrap">
+                {% for item in items %}
+                    <div class="card">
+                        <a href="{% url 'main:item_detail' item.slug %}">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="product-image">
+                            {% endif %}
+                            <div class="card-info">
+                                <h4>{{ item.name }}</h4>
+                                <p class="price">₽{{ item.get_price_with_discount }}</p>
+                            </div>
+                        </a>
+                    </div>
+                {% empty %}
+                    <p>Нет товаров для отображения.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+{% endblock content %}

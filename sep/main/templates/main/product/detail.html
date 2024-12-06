@@ -1,0 +1,67 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ item.name }}
+{% endblock title %}
+
+{% block content %}
+    <div class="detail-product d-flex">
+        <div class="detail-img">
+            {% for image in item.images.all %}
+                <img class="detail-image" src="{{ image.image.url }}" alt="{{ item.name }}" style="display: none;" data-index="{{ forloop.counter0 }}">
+            {% endfor %}
+            <div class="image-nav">
+                <button class="prev-btn">&lsaquo;</button>
+                <button class="next-btn">&rsaquo;</button>
+            </div>
+        </div>
+        <script>
+            const images = document.querySelectorAll('.detail-image');
+            const prevBtn = document.querySelector('.prev-btn');
+            const nextBtn = document.querySelector('.next-btn');
+            let currentIndex = 0;
+
+            images[currentIndex].style.display = 'block';
+
+            if (images.length === 1) {
+                prevBtn.style.display = 'none';
+                nextBtn.style.display = 'none';
+            } else {
+                prevBtn.addEventListener('click', () => {
+                    images[currentIndex].style.display = 'none';
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    images[currentIndex].style.display = 'block';
+                });
+
+                nextBtn.addEventListener('click', () => {
+                    images[currentIndex].style.display = 'none';
+                    currentIndex = (currentIndex + 1) % images.length;
+                    images[currentIndex].style.display = 'block';
+                });
+            }
+        </script>
+
+        <div class="detail-description">
+            <h2>{{ item.name }}</h2>
+            <h3>Категория: {{ item.category.name }}</h3>
+            <p>Описание: {{ item.description|linebreaks }}</p>
+            <h4>Размеры:</h4>
+            <ul>
+                {% for item_size in available_sizes %}
+                    <li>{{ item_size.size.name }}</li>
+                {% empty %}
+                    <li>Нет доступных размеров.</li>
+                {% endfor %}
+            </ul>
+            {% if item.discount %}
+                <div class="cart-discount d-flex gap-2">
+                    <p class="line">₽{{ item.price }}</p>
+                    <p class="price">₽{{ item.get_price_with_discount }}</p>
+                </div>
+            {% else %}
+                <p class="price">₽{{ item.price }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

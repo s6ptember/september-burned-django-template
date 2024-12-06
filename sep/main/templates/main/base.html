@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+
+    <meta name="description" content="{% block description %}описание, девиз вашего сайта{% endblock description %}">
+    <meta name="keywords" content="{% block keywords %}ключевые слова тематики вашего сайта{% endblock keywords %}">
+    {% comment %} если настраиваете отображение ссылки на сайт в соцсетях {% endcomment %}
+    {% comment %} <meta name="robots" content="index, follow"> {% endcomment %}
+
+
+    {% comment %} bootstrap {% endcomment %} 
+    <link rel="stylesheet" href="{% static 'bootstrap\css\bootstrap.min.css' %}">
+    {% comment %} css {% endcomment %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        {% block content %}{% endblock content %}
+    </div>
+
+    {% comment %} js for boorstrap {% endcomment %}
+    <script src="{% static 'bootstrap\js\bootstrap.bundle.min.js' %}"></script>
+
+    <script>
+        {% comment %} скрипт для фильтрации {% endcomment %}
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkboxes = document.querySelectorAll('.category-option input[type="checkbox"]');
+            const form = document.getElementById('filter-form');
+    
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    form.submit();
+                });
+            });
+        });
+
+        {% comment %} автоматически применяет заданный ценовой 
+        диапазон по истечении 1 секунды {% endcomment %}
+        let timeout;
+        function debounceApplyFilters() {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                const form = document.getElementById('filter-form');
+                form.submit(); 
+            }, 1000); 
+        }
+    </script>
+</body>
+</html>
