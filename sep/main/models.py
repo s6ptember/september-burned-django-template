@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Size(models.Model):
-    ''' для добавления размерной сетки '''
     name = models.CharField(max_length=10, unique=True)  
 
 
@@ -12,7 +11,6 @@ class Size(models.Model):
 
 
 class Category(models.Model):
-    ''' категории товаров '''
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(unique=True)
 
@@ -33,7 +31,6 @@ class Category(models.Model):
 
 
 class Item(models.Model):
-    ''' модели самого товара '''
     name = models.CharField(max_length=255) 
     slug = models.SlugField(unique=True)  
     available = models.BooleanField(default=True) 
@@ -54,7 +51,6 @@ class Item(models.Model):
         return self.name
 
 
-    # высчитывает цену с учетом скидки
     def get_price_with_discount(self):
         if self.discount > 0:
             return self.price * (1 - (self.discount / 100))
@@ -62,7 +58,6 @@ class Item(models.Model):
 
 
 class ItemSize(models.Model):
-    ''' для добавления размеров в товаре '''
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     size = models.ForeignKey(Size, on_delete=models.CASCADE)
     available = models.BooleanField(default=True)
@@ -73,10 +68,6 @@ class ItemSize(models.Model):
         
 
 class ItemImage(models.Model):
-    ''' 
-        для добавления фотографий, выводимых на 
-        странице детальной информации
-    '''
     product = models.ForeignKey(Item, related_name='images',
                                 on_delete=models.CASCADE)
     image = models.ImageField(upload_to='products/%Y/%m/%d', blank=True)
