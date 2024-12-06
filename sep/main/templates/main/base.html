@@ -8,8 +8,6 @@
 
     <meta name="description" content="{% block description %}описание, девиз вашего сайта{% endblock description %}">
     <meta name="keywords" content="{% block keywords %}ключевые слова тематики вашего сайта{% endblock keywords %}">
-    {% comment %} если настраиваете отображение ссылки на сайт в соцсетях {% endcomment %}
-    {% comment %} <meta name="robots" content="index, follow"> {% endcomment %}
 
 
     {% comment %} bootstrap {% endcomment %} 
@@ -27,7 +25,6 @@
     <script src="{% static 'bootstrap\js\bootstrap.bundle.min.js' %}"></script>
 
     <script>
-        {% comment %} скрипт для фильтрации {% endcomment %}
         document.addEventListener('DOMContentLoaded', function() {
             const checkboxes = document.querySelectorAll('.category-option input[type="checkbox"]');
             const form = document.getElementById('filter-form');
@@ -39,8 +36,6 @@
             });
         });
 
-        {% comment %} автоматически применяет заданный ценовой 
-        диапазон по истечении 1 секунды {% endcomment %}
         let timeout;
         function debounceApplyFilters() {
             clearTimeout(timeout);

@@ -4,19 +4,11 @@ from django.db.models import Q
 
 
 class CatalogView(ListView):
-    '''
-        главное представление каталога
-        
-        методы сортировки товаров - по категории, по размеру, по интервалу цены
-        
-    '''
     model = Item
-    # указываем расположение шаблона
     template_name = 'main/product/catalog.html'
     context_object_name = 'items'
     
     
-    # собираем сортировки
     def get_queryset(self):
         queryset = super().get_queryset()
         category_slugs = self.request.GET.getlist('category')
@@ -41,7 +33,6 @@ class CatalogView(ListView):
         return queryset
 
 
-    # передаем контекст
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
@@ -53,7 +44,6 @@ class CatalogView(ListView):
         return context
     
 
-# страница товара
 class ItemDetailView(DetailView):
     model = Item
     template_name = 'main/product/detail.html'

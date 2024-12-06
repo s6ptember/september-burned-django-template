@@ -4,13 +4,11 @@ from .models import Size, Category, Item, \
 
 
 class ItemSizeInline(admin.TabularInline):
-    ''' для работы размерной сетки '''
     model = ItemSize
     extra = 1  
     
 
 class ItemImageInline(admin.TabularInline):
-    ''' для работы фотографий в детальной странице товара '''
     model = ItemImage
     extra = 5
 
@@ -37,6 +35,4 @@ class ItemAdmin(admin.ModelAdmin):
     search_fields = ('name', 'slug')
     prepopulated_fields = {'slug': ('name',)}
     ordering = ('-created_at',)
-    # для отображения в админке функциоанала добавления
-    #               размеров и фотографий
     inlines = [ItemSizeInline, ItemImageInline] 

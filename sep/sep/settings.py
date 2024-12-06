@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 import os
 
 
-# загружаем .env
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -15,19 +14,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-# оставил 
-# SECRET_KEY = os.getenv("SECRET_KEY")
-# после создания проекта и генерации ключа копируем его, вписываем в env,
-#           а строку с secret key меняем на указанную выше
-SECRET_KEY = ''
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = os.getenv("DEBUG")
-# включаем/выключаем дебаг в .env
+
 DEBUG = os.getenv("DEBUG")
 
-# вписываем разрешенные деплои
-# по умолчанию - 127.0.0.1, при деплое меняете на свой вариант
 ALLOWED_HOSTS = [os.getenv("ALLOWED_HOST"), ]
 
 
@@ -81,8 +73,6 @@ WSGI_APPLICATION = 'sep.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# наша postgres DB(подключаетесь к своей локальной бд,
-#           создать можно в pgadmin4)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -118,8 +108,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-# по умолчанию ру язык, мск время, при желании - меняем в .env
 LANGUAGE_CODE = os.getenv('LANGUAGE_CODE', 'ru-RU')
+
 TIME_ZONE = os.getenv('TIME_ZONE', 'Europe/Moscow')
 
 
@@ -138,9 +128,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# для работы фотографий на сайте(НЕ относится к статическим изображениям)
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# для работы users
 AUTH_USER_MODEL = 'users.User'
